@@ -1,4 +1,4 @@
-# fiwix/Makefile
+		# fiwix/Makefile
 #
 # Copyright 2018-2022, Jordi Sanfeliu. All rights reserved.
 # Distributed under the terms of the Fiwix License.
@@ -64,6 +64,13 @@ OBJS = 	kernel/*.o \
 	lib/*.o
 
 export CC LD CFLAGS LDFLAGS INCLUDE
+
+# Select emulator (bochs or qemu) when running the kernel
+EMU ?= bochs
+
+run: all
+	@echo "Launching Fiwix under $(EMU)..."
+	@EMU=$(EMU) ./run.sh
 
 all:
 	@echo "#define UTS_VERSION \"`date -u`\"" > include/fiwix/version.h

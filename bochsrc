@@ -1,0 +1,16 @@
+# Minimal Bochs configuration for Fiwix
+megs: 128                         # allocate 128MB of RAM
+romimage: file=/usr/share/bochs/BIOS-bochs-latest   # BIOS ROM
+vgaromimage: file=/usr/share/vgabios/vgabios.bin    # VGA BIOS
+ata0-master: type=cdrom, path="FiwixOS.iso", status=inserted  # installer ISO
+ata0-slave:  type=disk, path="fiwix.img", mode=flat          # installation disk
+boot: cdrom                       # boot from the CD-ROM
+
+# Console interface settings
+config_interface: textconfig                             # no GUI menus
+# Use the curses front end
+display_library: term
+# To expose a VNC server instead, comment the line above and use:
+# display_library: rfb, options=hideIPS,no_gui_console
+
+log: bochs.log                    # emulator log file
