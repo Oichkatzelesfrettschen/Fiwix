@@ -5,3 +5,11 @@ include/fiwix/custom_config.h
 include/fiwix/custom_limits.h
 include/fiwix/custom_kernel.h
 include/fiwix/custom_system.h
+
+# Emulator artifacts
+fiwix.img
+FiwixOS.iso
+bochs.log
+qemu.log
+
+run-qemu.log
