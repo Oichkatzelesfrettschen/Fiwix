@@ -1,4 +1,4 @@
-		# fiwix/Makefile
+# fiwix/Makefile
 #
 # Copyright 2018-2022, Jordi Sanfeliu. All rights reserved.
 # Distributed under the terms of the Fiwix License.
@@ -17,7 +17,7 @@ LANG = -std=c89
 CCEXE=gcc
 
 CC = $(CROSS_COMPILE)$(CCEXE) $(ARCH) $(CPU) $(LANG) -D__KERNEL__ $(CONFFLAGS) #-D__DEBUG__
-CFLAGS = -I$(INCLUDE) -O2 -fno-pie -fno-common -ffreestanding -Wall -Wstrict-prototypes #-Wextra -Wno-unused-parameter
+CFLAGS = -I$(INCLUDE) -O2 -fno-pie -fno-common -ffreestanding -Wall -Wstrict-prototypes -Werror -Wa,--noexecstack #-Wextra -Wno-unused-parameter
 
 ifeq ($(CCEXE),gcc)
 LD = $(CROSS_COMPILE)ld
@@ -77,7 +77,7 @@ all:
 	@for n in $(DIRS) ; do (cd $$n ; $(MAKE)) || exit ; done
 ifeq ($(CCEXE),gcc)
 	$(CPP) $(CONFFLAGS) fiwix.ld > $(TMPFILE)
-	$(LD) -N -T $(TMPFILE) $(LDFLAGS) $(OBJS) $(LIBGCC) -o fiwix
+	$(LD) -T $(TMPFILE) $(LDFLAGS) $(OBJS) $(LIBGCC) -o fiwix
 	rm -f $(TMPFILE)
 	nm fiwix | sort | gzip -9c > System.map.gz
 endif
