@@ -1,8 +1,7 @@
 # Running Fiwix with QEMU or Bochs
 
-This guide explains how to build the kernel and launch it under an emulator. Use
-the provided `setup.sh` to install packages on Debian 12 or Ubuntu 24.04, then
-run `run.sh` or the `make run` target.
+This guide explains how to build the kernel and launch it under an emulator.
+Use the `fiwixctl.sh` helper to install packages, build the kernel and run it.
 
 ## Setup
 
@@ -10,7 +9,7 @@ Run the helper below to install all dependencies and create a starter disk
 image:
 
 ```bash
-sudo ./setup.sh
+sudo ./fiwixctl.sh setup
 ```
 
 The script uses `apt-get` and works on both Debian 12 and Ubuntu 24.04.
@@ -19,16 +18,15 @@ The script uses `apt-get` and works on both Debian 12 and Ubuntu 24.04.
 
 ```bash
 # Compile the kernel and launch Bochs (default)
-make run
+./fiwixctl.sh run
 
 # Use QEMU instead
-make EMU=qemu run
+EMU=qemu ./fiwixctl.sh run
 ```
 
-The `run.sh` helper respects the `EMU` environment variable. When set to
-`bochs`, it starts Bochs using `bochsrc` with a curses display. With
-`EMU=qemu`, it launches `qemu-system-i386` using `-display curses` and logs to
-`qemu.log`.
+The helper respects the `EMU` environment variable. When set to `bochs`, it
+starts Bochs using `bochsrc`. With `EMU=qemu`, it launches `qemu-system-i386`
+using `-display curses` and logs to `qemu.log`.
 
 Both emulators require 32-bit support packages. The build may succeed but the emulator might not run in restricted environments.
 
@@ -38,8 +36,9 @@ must provide `FiwixOS.iso` yourself to install the system when using Bochs.
 
 ## Installing Emulator Packages
 
-Use `apt-get` to install build tools plus Bochs, QEMU and VNC packages. The `run.sh` script
-attempts this automatically, but you can do it manually as well:
+Use `apt-get` to install build tools plus Bochs, QEMU and VNC packages. The
+`fiwixctl.sh setup` command attempts this automatically, but you can do it
+manually as well:
 
 ```bash
 sudo apt-get update
