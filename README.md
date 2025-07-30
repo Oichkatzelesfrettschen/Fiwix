@@ -50,7 +50,8 @@ Features
 
 Compiling
 ---------
-The command needed to build the Fiwix kernel is `./build.sh clean && ./build.sh`.  This will create the files **fiwix** (the kernel itself) and **System.map.gz** (the symbol table) in the root directory of the source code tree.
+Build the kernel with the unified helper `./fiwixctl.sh build`. This creates the
+**fiwix** kernel and **System.map.gz** in the root directory of the source tree.
 
 Before compiling you might want to tweak the kernel configuration by changing the default values in `include/fiwix/config.h` and `include/fiwix/limits.h`.
 
