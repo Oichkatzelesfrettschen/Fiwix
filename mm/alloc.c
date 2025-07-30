@@ -25,7 +25,7 @@ unsigned int kmalloc(__size_t size)
 
 	/* check if size can be managed by buddy_low */
 	max_size = bl_blocksize[BUDDY_MAX_LEVEL - 1];
-	if(size + sizeof(struct bl_head) <= max_size) {
+       if(size + sizeof(struct bl_head) <= (unsigned int)max_size) {
 		size += sizeof(struct bl_head);
 		return bl_malloc(size);
 	}

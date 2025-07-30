@@ -64,7 +64,8 @@
  */
 static void elf_create_stack(struct binargs *barg, unsigned int *sp, unsigned int str_ptr, int at_base, struct elf32_hdr *elf32_h, unsigned int phdr_addr)
 {
-	unsigned int n, addr;
+       int n;
+       unsigned int addr;
 	char *str;
 
 	/* copy strings */

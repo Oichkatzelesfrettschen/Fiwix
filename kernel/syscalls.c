@@ -19,9 +19,11 @@
 static int verify_address(int type, const void *addr, unsigned int size)
 {
 #ifdef CONFIG_LAZY_USER_ADDR_CHECK
-	if(!addr) {
-		return -EFAULT;
-	}
+       (void)type;
+       (void)size;
+        if(!addr) {
+                return -EFAULT;
+        }
 #else
 	struct vma *vma;
 	unsigned int start;
@@ -138,14 +140,14 @@ int check_group(struct inode *i)
 		return 0;
 	}
 
-	for(n = 0; n < NGROUPS_MAX; n++) {
-		if(current->groups[n] == -1) {
-			break;
-		}
-		if(current->groups[n] == i->i_gid) {
-			return 0;
-		}
-	}
+       for(n = 0; n < NGROUPS_MAX; n++) {
+               if(current->groups[n] == -1) {
+                       break;
+               }
+               if(current->groups[n] == (int)i->i_gid) {
+                       return 0;
+               }
+       }
 	return 1;
 }
 
@@ -477,7 +479,9 @@ void *syscall_table[] = {
 static void do_bad_syscall(unsigned int num)
 {
 #ifdef __DEBUG__
-	printk("***** (pid %d) system call %d not supported yet *****\n", current->pid, num);
+        printk("***** (pid %d) system call %d not supported yet *****\n", current->pid, num);
+#else
+       (void)num;
 #endif /*__DEBUG__ */
 }
 

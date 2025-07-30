@@ -274,7 +274,7 @@ void release_page(struct page *pg)
 
 int is_valid_page(int page)
 {
-	return (page >= 0 && page < NR_PAGES);
+       return (page >= 0 && page < (int)NR_PAGES);
 }
 
 void invalidate_inode_pages(struct inode *i)
@@ -496,12 +496,13 @@ void reserve_pages(unsigned int from, unsigned int to)
 void page_init(int pages)
 {
 	struct page *pg;
-	unsigned int n, addr;
+       int n;
+       unsigned int addr;
 
 	memset_b(page_table, 0, page_table_size);
 	memset_b(page_hash_table, 0, page_hash_table_size);
 
-	for(n = 0; n < pages; n++) {
+       for(n = 0; n < pages; n++) {
 		pg = &page_table[n];
 		pg->page = n;
 

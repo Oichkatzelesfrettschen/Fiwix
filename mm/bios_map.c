@@ -155,7 +155,7 @@ void bios_map_init(struct multiboot_mmap_entry *bmmap_addr, unsigned int bmmap_l
 			bmmap = (struct multiboot_mmap_entry *)((unsigned int)bmmap + bmmap->size + sizeof(bmmap->size));
 		}
 		kstat.physical_pages += (1024 >> 2);	/* add the first MB as a whole */
-		if(kstat.physical_pages > (GDT_BASE >> PAGE_SHIFT)) {
+               if(kstat.physical_pages > (int)(GDT_BASE >> PAGE_SHIFT)) {
 			printk("WARNING: detected a total of %dMB of available memory below 4GB.\n", (kstat.physical_pages << 2) / 1024);
 		}
 	} else {
@@ -177,7 +177,7 @@ void bios_map_init(struct multiboot_mmap_entry *bmmap_addr, unsigned int bmmap_l
 	 * Truncate physical memory to upper kernel address space size (1GB or 2GB), since
 	 * currently all memory is permanently mapped there.
 	 */
-	if(kstat.physical_pages > (GDT_BASE >> PAGE_SHIFT)) {
+       if(kstat.physical_pages > (int)(GDT_BASE >> PAGE_SHIFT)) {
 		kstat.physical_pages = (GDT_BASE >> PAGE_SHIFT);
 		printk("WARNING: only up to %dGB of physical memory will be used.\n", GDT_BASE >> 30);
 	}

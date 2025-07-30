@@ -15,7 +15,9 @@
 int sys_setfsgid(__gid_t fsgid)
 {
 #ifdef __DEBUG__
-	printk("(pid %d) sys_setfsgid(%d) -> %d\n", current->pid, fsgid);
+       printk("(pid %d) sys_setfsgid(%d) -> %d\n", current->pid, fsgid);
+#else
+       (void)fsgid;
 #endif /*__DEBUG__ */
-	return 0;
+       return 0;
 }

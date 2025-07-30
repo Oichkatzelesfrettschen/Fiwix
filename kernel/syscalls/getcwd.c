@@ -106,7 +106,7 @@ int sys_getcwd(char *buf, __size_t size)
 				if((!diff_dev && d_ptr->d_ino == cur->inode) || (diff_dev && tmp_ino->inode == cur->inode)) {
 					if(strcmp("..", d_ptr->d_name)) {
 						namelength = strlen(d_ptr->d_name);
-						if(marker < namelength + 1) {
+                                               if(marker < (__size_t)namelength + 1) {
 							release_fd(tmp_fd);
 							iput(up);
 							if(cur != current->pwd) {

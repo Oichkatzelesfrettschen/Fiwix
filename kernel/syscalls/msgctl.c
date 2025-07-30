@@ -100,7 +100,7 @@ int sys_msgctl(int msqid, int cmd, struct msqid_ds *buf)
 			msgque[msqid % MSGMNI] = (struct msqid_ds *)IPC_UNUSED;
 			num_queues--;
 			msg_seq++;
-			if((msqid % MSGMNI) == max_mqid) {
+                       if(((unsigned int)(msqid % MSGMNI)) == max_mqid) {
 				while(max_mqid) {
 					if(msgque[max_mqid] != IPC_UNUSED) {
 						break;

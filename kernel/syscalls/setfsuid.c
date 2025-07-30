@@ -15,7 +15,9 @@
 int sys_setfsuid(__uid_t fsuid)
 {
 #ifdef __DEBUG__
-	printk("(pid %d) sys_setfsuid(%d) -> %d\n", current->pid, fsuid);
+       printk("(pid %d) sys_setfsuid(%d) -> %d\n", current->pid, fsuid);
+#else
+       (void)fsuid;
 #endif /*__DEBUG__ */
-	return 0;
+       return 0;
 }

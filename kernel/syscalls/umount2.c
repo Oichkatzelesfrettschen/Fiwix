@@ -20,6 +20,7 @@ static struct resource umount_resource = { 0, 0 };
 
 int sys_umount2(const char *target, int flags)
 {
+       (void)flags;
 	struct inode *i_target;
 	struct mount *mp = NULL;
 	struct filesystems *fs;

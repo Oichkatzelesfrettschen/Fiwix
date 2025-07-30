@@ -33,6 +33,7 @@ static void send_sigsegv(struct sigcontext *sc)
 
 static int page_protection_violation(struct vma *vma, unsigned int cr2, struct sigcontext *sc)
 {
+       (void)vma;
 	unsigned int *pgdir;
 	unsigned int *pgtbl;
 	unsigned int pde, pte, addr;
@@ -60,9 +61,9 @@ static int page_protection_violation(struct vma *vma, unsigned int cr2, struct s
 			return 1;
 		}
 		current->rss++;
-		memcpy_b((void *)addr, (void *)P2V((page << PAGE_SHIFT)), PAGE_SIZE);
+               memcpy_b((void *)addr, (void *)P2V(((unsigned int)page << PAGE_SHIFT)), PAGE_SIZE);
 		pgtbl[pte] = V2P(addr) | PAGE_PRESENT | PAGE_RW | PAGE_USER;
-		kfree(P2V((page << PAGE_SHIFT)));
+               kfree(P2V(((unsigned int)page << PAGE_SHIFT)));
 		current->rss--;
 		invalidate_tlb();
 		return 0;

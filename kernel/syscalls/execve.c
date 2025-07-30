@@ -343,7 +343,12 @@ int sys_execve(const char *filename, char *argv[], char *envp[], int arg4, int a
 int sys_execve(const char *filename, char *argv[], char *envp[], int arg4, int arg5, struct sigcontext *sc)
 #endif /* CONFIG_SYSCALL_6TH_ARG */
 {
-	char *tmp_name;
+       (void)arg4;
+       (void)arg5;
+#ifdef CONFIG_SYSCALL_6TH_ARG
+       (void)arg6;
+#endif
+        char *tmp_name;
 	int n, errno;
 
 #ifdef __DEBUG__

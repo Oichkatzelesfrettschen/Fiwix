@@ -20,7 +20,9 @@ int sys_sigreturn(unsigned int signum, int arg2, int arg3, int arg4, int arg5, s
 #endif /* CONFIG_SYSCALL_6TH_ARG */
 {
 #ifdef __DEBUG__
-	printk("(pid %d) sys_sigreturn(0x%08x)\n", current->pid, signum);
+       printk("(pid %d) sys_sigreturn(0x%08x)\n", current->pid, signum);
+#else
+       (void)arg2; (void)arg3; (void)arg4; (void)arg5;
 #endif /*__DEBUG__ */
 
 	current->sigblocked &= ~current->sigexecuting;

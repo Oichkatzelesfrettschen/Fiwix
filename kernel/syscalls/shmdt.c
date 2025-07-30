@@ -24,7 +24,7 @@ int sys_shmdt(char *shmaddr)
 	struct vma *vma;
 	struct shmid_ds *seg;
 	unsigned int addr;
-	int n;
+       unsigned int n;
 
 #ifdef __DEBUG__
 	printk("(pid %d) sys_shmdt(0x%x)\n", current->pid, (int)shmaddr);

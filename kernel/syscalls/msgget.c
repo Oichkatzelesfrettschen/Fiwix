@@ -159,9 +159,9 @@ init:
 	mq->msg_qbytes = MSGMNB;
 	mq->msg_lspid = mq->msg_lrpid = 0;
 	msgque[n] = mq;
-	if(n > max_mqid) {
-		max_mqid = n;
-	}
+       if((unsigned int)n > max_mqid) {
+               max_mqid = n;
+       }
 	num_queues++;
 	return (mq->msg_perm.seq * MSGMNI) + n;
 }

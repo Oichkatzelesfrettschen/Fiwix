@@ -20,20 +20,20 @@ int sys_setregid(__gid_t gid, __gid_t egid)
 #endif /*__DEBUG__ */
 
 	if(IS_SUPERUSER) {
-		if(egid != (__uid_t)-1) {
-			if(gid != (__uid_t)-1 || (current->egid >= 0 && current->gid != egid)) {
-				current->sgid = egid;
-			}
-			current->egid = egid;
-		}
+               if(egid != (__uid_t)-1) {
+                       if(gid != (__uid_t)-1 || (current->gid != egid)) {
+                               current->sgid = egid;
+                       }
+                       current->egid = egid;
+               }
 		if(gid != (__uid_t)-1) {
 			current->gid = gid;
 		}
 	} else {
-		if(egid != (__uid_t)-1 && (current->gid == egid || current->egid == egid || current->sgid == egid)) {
-			if(gid != (__uid_t)-1 || (current->egid >= 0 && current->gid != egid)) {
-				current->sgid = egid;
-			}
+               if(egid != (__uid_t)-1 && (current->gid == egid || current->egid == egid || current->sgid == egid)) {
+                       if(gid != (__uid_t)-1 || (current->gid != egid)) {
+                               current->sgid = egid;
+                       }
 			current->egid = egid;
 		} else {
 			return -EPERM;

@@ -96,7 +96,9 @@ static struct bl_head *allocate(int size)
 	unsigned int addr, paddr;
 	int level;
 
-	for(level = 0; bl_blocksize[level] < size; level++);
+       for(level = 0; bl_blocksize[level] < (unsigned int)size; level++) {
+               ;
+       }
 
 	if(level == BUDDY_MAX_LEVEL) {
 		if((addr = kmalloc(PAGE_SIZE))) {
@@ -147,7 +149,9 @@ unsigned int bl_malloc(__size_t size)
 	struct bl_head *block;
 	int level;
 
-	for(level = 0; bl_blocksize[level] < size; level++);
+       for(level = 0; bl_blocksize[level] < (unsigned int)size; level++) {
+               ;
+       }
 
 	kstat.buddy_low_count[level]++;
 	kstat.buddy_low_mem_requested += bl_blocksize[level];

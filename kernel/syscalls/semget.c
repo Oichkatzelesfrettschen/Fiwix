@@ -206,9 +206,9 @@ init:
 	ss->undo = NULL;
 	ss->sem_nsems = nsems;
 	semset[n] = ss;
-	if(n > max_semid) {
-		max_semid = n;
-	}
+       if((unsigned int)n > max_semid) {
+               max_semid = n;
+       }
 	num_sems += nsems;
 	num_semsets++;
 	return (ss->sem_perm.seq * SEMMNI) + n;
