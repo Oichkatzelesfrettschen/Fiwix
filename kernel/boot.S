@@ -125,3 +125,5 @@ pushl %ecx / save Multiboot magic value */
 call start_kernel
 /* not reached */
 jmp cpu_idle
+.section .note.GNU-stack,"",@progbits
+

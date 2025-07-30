@@ -372,7 +372,7 @@ s = u->socket;
 fd = s->fd;
 size += sprintk(buffer + size, "%08x: %08d %08d %08x %04d %02d % 5d %s\n",
 &s->u.unix,
-u->count, /* FIXME s->fd->count, /
+u->count, /* FIXME: use s->fd->count */
 0,
 s->flags,
 s->type,
@@ -384,7 +384,7 @@ u = u->next;
 return size;
 #else
 return 0;
-#endif / CONFIG_NET */
+#endif /* CONFIG_NET */
 }
 int data_proc_buffernr(char *buffer, __pid_t pid)
 {
@@ -692,7 +692,7 @@ sigcaught |= mask;
 }
 esp = eip = 0;
 if(p->sp) {
-sc = (struct sigcontext )p->sp;
+sc = (struct sigcontext *)p->sp;
 esp = sc->oldesp;
 eip = sc->eip;
 }
@@ -703,25 +703,25 @@ pstate[p->state][0],
 p->ppid->pid, p->pgid, p->sid,
 p->ctty ? p->ctty->dev : 0,
 p->ctty ? p->ctty->pgid : -1,
-0, / flags /
-0, 0, 0, 0, / minflt, cminflt, majflt, cmajflt /
+0, /* flags */
+0, 0, 0, 0, /* minflt, cminflt, majflt, cmajflt */
 tv2ticks(&p->usage.ru_utime),
 tv2ticks(&p->usage.ru_stime),
 tv2ticks(&p->cusage.ru_utime),
 tv2ticks(&p->cusage.ru_stime),
-0, / counter /
-0, / priority /
-0, / timeout /
-0, / itrealvalue /
+0, /* counter */
+0, /* priority */
+0, /* timeout */
+0, /* itrealvalue */
 p->start_time,
 text + data + stack + mmap,
 p->rss,
-0x7FFFFFFF, / rlim /
-vma_start, / startcode /
-vma_end, / endcode /
-PAGE_OFFSET - 1, / startstack /
-esp, / kstkesp /
-eip, / kstkeip */
+0x7FFFFFFF, /* rlim */
+vma_start, /* startcode */
+vma_end, /* endcode */
+PAGE_OFFSET - 1, /* startstack */
+esp, /* kstkesp */
+eip, /* kstkeip */
 p->sigpending,
 p->sigblocked,
 sigignored,
