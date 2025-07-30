@@ -144,3 +144,5 @@ multiboot_header:			/* multiboot header */
 	/* not reached */
 	jmp	cpu_idle
 
+
+	.section .note.GNU-stack,"",@progbits
