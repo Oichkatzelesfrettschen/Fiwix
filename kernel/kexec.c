@@ -44,13 +44,52 @@ static void _memcpy_b(void *dest, const void *src, unsigned int count)
 
 static void _memset_b(void *dest, unsigned char value, unsigned int count)
 {
-	unsigned char *d;
+        unsigned char *d;
 
-	d = (unsigned char *)dest;
-	while(count--) {
-		*d = 0;
-		d++;
-	}
+        d = (unsigned char *)dest;
+        while(count--) {
+                *d = 0;
+                d++;
+        }
+}
+
+/*
+ * Return the size of the real mode setup code in bytes.
+ */
+static __size_t get_setup_code_size(const char *kernel_src_addr)
+{
+       __size_t size = 0;
+
+       memcpy_b(&size, kernel_src_addr + 0x1f1, 1);
+       if(!size) {
+               size = 4;
+       }
+
+       return size * 512;
+}
+
+/*
+ * Return the offset to the end of the setup header.
+ */
+static __size_t get_setup_header_end(const char *kernel_src_addr)
+{
+       __u8 x;
+
+       memcpy_b(&x, kernel_src_addr + 0x201, 1);
+       return 0x202 + x;
+}
+
+/*
+ * Fill in default VGA text mode parameters for screen info.
+ */
+static void fill_default_screen_info(struct screen_info *si)
+{
+       si->mode = 3;
+       si->ega_bx = 3;
+       si->lines = 25;
+       si->cols = 80;
+       si->points = 16;
+       si->is_vga = IS_VGA_VGA_COLOR;
 }
 
 static void multiboot1_trampoline(unsigned int ramdisk_addr, unsigned int kernel_addr, int size, struct multiboot_info *info)
@@ -487,8 +526,8 @@ void kexec_linux(void)
 	/* space reserved for the memory map structure */
 	kernel_src_addr = ramdisk_table[ramdisk_minors - 1].addr + (sizeof(__u32) * 2);
 
-	__u32 signature;
-	memcpy_b(&signature, kernel_src_addr + 0x202, sizeof(__u32));
+       __u32 signature;
+       memcpy_b(&signature, kernel_src_addr + 0x202, sizeof(__u32));
 
 	/* validate signature */
 	if (signature != 0x53726448) {
@@ -498,12 +537,7 @@ void kexec_linux(void)
 		printk("kexec_linux: Valid kernel signature\n");
 	}
 
-	__size_t setup_code_size = 0;
-	memcpy_b(&setup_code_size, kernel_src_addr + 0x1f1, 1);
-	if (setup_code_size == 0) {
-		setup_code_size = 4;
-	}
-	setup_code_size *= 512;
+       __size_t setup_code_size = get_setup_code_size(kernel_src_addr);
 
 	__size_t real_mode_code_size = 512 + setup_code_size;
 
@@ -532,11 +566,7 @@ void kexec_linux(void)
 
 	struct setup_header *setup_header = &boot_params->hdr;
 
-	__size_t setup_header_end = ({
-		__u8 x;
-		memcpy_b(&x, kernel_src_addr + 0x201, 1);
-		0x202 + x;
-	});
+       __size_t setup_header_end = get_setup_header_end(kernel_src_addr);
 
 	memcpy_b(setup_header, kernel_src_addr + 0x1f1, setup_header_end - 0x1f1);
 
@@ -581,15 +611,9 @@ void kexec_linux(void)
 	}
 	setup_header->initramfs_size  = (__u32)initrd_size;
 
-	struct screen_info *screen_info = &boot_params->screen_info;
+       struct screen_info *screen_info = &boot_params->screen_info;
 
-	screen_info->mode = 3;
-	screen_info->ega_bx = 3;
-	screen_info->lines = 25;
-	screen_info->cols = 80;
-	screen_info->points = 16;
-
-	screen_info->is_vga = IS_VGA_VGA_COLOR;
+       fill_default_screen_info(screen_info);
 
 	/* e820 bios memory entries */
 
