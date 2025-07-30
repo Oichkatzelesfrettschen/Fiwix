@@ -18,7 +18,8 @@ void pit_beep_on(void)
 
 void pit_beep_off(unsigned int unused)
 {
-	outport_b(PS2_SYSCTRL_B, inport_b(PS2_SYSCTRL_B) & ~(ENABLE_SDATA | ENABLE_TMR2G));
+       (void)unused;
+       outport_b(PS2_SYSCTRL_B, inport_b(PS2_SYSCTRL_B) & ~(ENABLE_SDATA | ENABLE_TMR2G));
 }
 
 int pit_getcounter0(void)

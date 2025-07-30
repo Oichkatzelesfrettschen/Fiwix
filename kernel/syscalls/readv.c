@@ -41,9 +41,7 @@ int sys_readv(unsigned int ufd, const struct iovec *iov, int iovcnt)
 		if(!io_read->iov_len) {
 			continue;
 		}
-		if(io_read->iov_len < 0) {
-			return -EINVAL;
-		}
+
 
 		i = fd_table[current->fd[ufd]].inode;
 		if(i->fsop && i->fsop->read) {
@@ -52,9 +50,9 @@ int sys_readv(unsigned int ufd, const struct iovec *iov, int iovcnt)
 			    return errno;
 			}
 			bytes_read += errno;
-			if (errno < io_read->iov_len) {
-				break;
-			}
+                       if ((__size_t)errno < io_read->iov_len) {
+                               break;
+                       }
 		} else {
 			return -EINVAL;
 		}

@@ -43,7 +43,7 @@ int sys_shmctl(int shmid, int cmd, struct shmid_ds *buf)
 				return errno;
 			}
 			if(cmd == SHM_STAT) {
-				if(shmid > max_segid) {
+                               if((unsigned int)shmid > max_segid) {
 					return -EINVAL;
 				}
 				seg = shmseg[shmid];

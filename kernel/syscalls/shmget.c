@@ -30,7 +30,7 @@ unsigned int shm_rss;
 static struct shmid_ds shmseg_pool[SHMMNI];
 struct shmid_ds *shm_get_new_seg(void)
 {
-	int n;
+       unsigned int n;
 
 	for(n = 0; n < SHMMNI; n++) {
 		if(shmseg_pool[n].shm_ctime == 0) {
@@ -65,7 +65,7 @@ void free_seg(int shmid)
 	shm_tot -= npages;
 	shm_seq++;
 	shmseg[shmid % SHMMNI] = (struct shmid_ds *)IPC_UNUSED;
-	if((shmid % SHMMNI) == max_segid) {
+       if(((unsigned int)(shmid % SHMMNI)) == max_segid) {
 		while(max_segid) {
 			if(shmseg[max_segid] != IPC_UNUSED) {
 				break;
@@ -78,7 +78,7 @@ void free_seg(int shmid)
 
 struct vma *shm_get_new_attach(struct shmid_ds *seg)
 {
-	int n;
+       unsigned int n;
 
 	if(!seg->shm_attaches) {
 		if(!(seg->shm_attaches = (void *)kmalloc(PAGE_SIZE))) {
@@ -101,7 +101,7 @@ void shm_release_attach(struct vma *attach)
 
 void shm_init(void)
 {
-	int n;
+       unsigned int n;
 
 	for(n = 0; n < SHMMNI; n++) {
 		shmseg[n] = (struct shmid_ds *)IPC_UNUSED;
@@ -114,15 +114,15 @@ int sys_shmget(key_t key, __size_t size, int shmflg)
 {
 	struct shmid_ds *seg;
 	struct ipc_perm *perm;
-	int n, npages;
+       unsigned int n, npages;
 
 #ifdef __DEBUG__
 	printk("(pid %d) sys_shmget(%d, %d, 0x%x)\n", current->pid, (int)key, size, shmflg);
 #endif /*__DEBUG__ */
 
-	if(size < 0 || size > SHMMAX) {
-		return -EINVAL;
-	}
+       if(size > SHMMAX) {
+               return -EINVAL;
+       }
 
 	if(key == IPC_PRIVATE) {
 		/* create a new segment */
@@ -209,9 +209,10 @@ init:
 	seg->shm_npages = 0;
 	seg->shm_attaches = 0;
 	shmseg[n] = seg;
-	if(n > max_segid) {
-		max_segid = n;
-	}
+       if(n > max_segid) {
+               /* n and max_segid are unsigned after patch */
+               max_segid = n;
+       }
 	num_segs++;
 	shm_tot += npages;
 	return (seg->shm_perm.seq * SHMMNI) + n;

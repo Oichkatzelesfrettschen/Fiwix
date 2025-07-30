@@ -25,7 +25,7 @@ int sys_reboot(int magic1, int magic2, int flag)
 	if(!IS_SUPERUSER) {
 		return -EPERM;
 	}
-	if((magic1 != BMAGIC_1) || (magic2 != BMAGIC_2)) {
+       if(((unsigned int)magic1 != BMAGIC_1) || ((unsigned int)magic2 != BMAGIC_2)) {
 		return -EINVAL;
 	}
 	switch(flag) {

@@ -20,7 +20,8 @@
 
 int sys_mount(const char *source, const char *target, const char *fstype, unsigned int flags, const void *data)
 {
-	struct inode *i_source, *i_target;
+       (void)data;
+        struct inode *i_source, *i_target;
 	struct mount *mp;
 	struct filesystems *fs;
 	char *tmp_source, *tmp_target, *tmp_fstype;

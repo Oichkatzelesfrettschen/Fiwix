@@ -37,8 +37,12 @@ int sys_iopl(int level, int arg2, int arg3, int arg4, int arg5, int arg6, struct
 int sys_iopl(int level, int arg2, int arg3, int arg4, int arg5, struct sigcontext *sc)
 #endif /* CONFIG_SYSCALL_6TH_ARG */
 {
+       (void)arg2; (void)arg3; (void)arg4; (void)arg5;
+#ifdef CONFIG_SYSCALL_6TH_ARG
+       (void)arg6;
+#endif
 #ifdef __DEBUG__
-	printk("(pid %d) sys_iopl(%d) -> ", current->pid, level);
+       printk("(pid %d) sys_iopl(%d) -> ", current->pid, level);
 #endif /*__DEBUG__ */
 	if(level > USER_PL) {
 #ifdef __DEBUG__

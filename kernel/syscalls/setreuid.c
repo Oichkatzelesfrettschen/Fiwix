@@ -20,20 +20,20 @@ int sys_setreuid(__uid_t uid, __uid_t euid)
 #endif /*__DEBUG__ */
 
 	if(IS_SUPERUSER) {
-		if(euid != (__uid_t)-1) {
-			if(uid != (__uid_t)-1 || (current->euid >= 0 && current->uid != euid)) {
-				current->suid = euid;
-			}
-			current->euid = euid;
-		}
+               if(euid != (__uid_t)-1) {
+                       if(uid != (__uid_t)-1 || (current->uid != euid)) {
+                               current->suid = euid;
+                       }
+                       current->euid = euid;
+               }
 		if(uid != (__uid_t)-1) {
 			current->uid = uid;
 		}
 	} else {
-		if(euid != (__uid_t)-1 && (current->uid == euid || current->euid == euid || current->suid == euid)) {
-			if(uid != (__uid_t)-1 || (current->euid >= 0 && current->uid != euid)) {
-				current->suid = euid;
-			}
+               if(euid != (__uid_t)-1 && (current->uid == euid || current->euid == euid || current->suid == euid)) {
+                       if(uid != (__uid_t)-1 || (current->uid != euid)) {
+                               current->suid = euid;
+                       }
 			current->euid = euid;
 		} else {
 			return -EPERM;

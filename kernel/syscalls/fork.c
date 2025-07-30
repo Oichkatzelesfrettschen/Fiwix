@@ -36,6 +36,7 @@ int sys_fork(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, struct 
 int sys_fork(int arg1, int arg2, int arg3, int arg4, int arg5, struct sigcontext *sc)
 #endif /* CONFIG_SYSCALL_6TH_ARG */
 {
+    (void)arg1; (void)arg2; (void)arg3; (void)arg4; (void)arg5;
 	int count, pages;
 	unsigned int n;
 	unsigned int *child_pgdir;

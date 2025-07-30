@@ -113,7 +113,7 @@ unsigned int setup_tmp_pgdir(unsigned int magic, unsigned int info)
 	pgtbl = (unsigned int *)addr;
 	memset_b(pgtbl, 0, memksize);
 
-	for(n = 0; n < memksize / sizeof(unsigned int); n++) {
+       for(n = 0; n < (int)(memksize / sizeof(unsigned int)); n++) {
 		pgtbl[n] = (n << PAGE_SHIFT) | PAGE_PRESENT | PAGE_RW;
 		if(!(n % 1024)) {
 			pd = n / 1024;
@@ -208,7 +208,7 @@ int free_page_tables(struct proc *p)
 	int n, count;
 
 	pgdir = (unsigned int *)P2V(p->tss.cr3);
-	for(n = 0, count = 0; n < PD_ENTRIES; n++) {
+       for(n = 0, count = 0; n < (int)PD_ENTRIES; n++) {
 		if((pgdir[n] & (PAGE_PRESENT | PAGE_RW | PAGE_USER)) == (PAGE_PRESENT | PAGE_RW | PAGE_USER)) {
 			kfree(P2V(pgdir[n]) & PAGE_MASK);
 			pgdir[n] = 0;

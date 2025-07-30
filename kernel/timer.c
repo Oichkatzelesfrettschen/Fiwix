@@ -177,10 +177,12 @@ void del_callout(struct callout_req *creq)
 
 void irq_timer(int num, struct sigcontext *sc)
 {
-	if((++kstat.ticks % HZ) == 0) {
-		CURRENT_TIME++;
-		kstat.uptime++;
-	}
+       (void)num;
+       (void)sc;
+       if((++kstat.ticks % HZ) == 0) {
+               CURRENT_TIME++;
+               kstat.uptime++;
+       }
 
 	timer_bh.flags |= BH_ACTIVE;
 }
@@ -337,7 +339,8 @@ void irq_timer_bh(struct sigcontext *sc)
 
 void do_callouts_bh(struct sigcontext *sc)
 {
-	struct callout *c;
+       (void)sc;
+       struct callout *c;
 	void (*fn)(unsigned int);
 	unsigned int arg;
 

@@ -91,7 +91,7 @@ int sys_msgrcv(int msqid, void *msgp, __size_t msgsz, int msgtyp, int msgflg)
 		}
 	}
 
-	if(msgsz < m->msg_ts) {
+       if(msgsz < (__size_t)m->msg_ts) {
 		if(!(msgflg & MSG_NOERROR)) {
 			return -E2BIG;
 		}

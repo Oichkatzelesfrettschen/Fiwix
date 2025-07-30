@@ -112,7 +112,7 @@ int sys_semctl(int semid, int semnum, int cmd, void *arg)
 			semset[semid % SEMMNI] = (struct semid_ds *)IPC_UNUSED;
 			num_semsets--;
 			sem_seq++;
-			if((semid % SEMMNI) == max_semid) {
+                       if(((unsigned int)(semid % SEMMNI)) == max_semid) {
 				while(max_semid) {
 					if(semset[max_semid] != IPC_UNUSED) {
 						break;
@@ -178,9 +178,10 @@ int sys_semctl(int semid, int semnum, int cmd, void *arg)
 					return s->semncnt;
 				case GETZCNT:
 					return s->semzcnt;
-			}
+                       }
+                       /* fall through */
 
-		case SETVAL:
+               case SETVAL:
 			ss = semset[semid % SEMMNI];
 			if(ss == IPC_UNUSED) {
 				return -EINVAL;
