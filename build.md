@@ -9,7 +9,7 @@ which orchestrates the existing `Makefile`.
 Ensure the build tools are installed:
 
 ```bash
-sudo apt-get install build-essential ninja-build
+sudo apt-get install build-essential ninja-build clang lld
 ```
 
 ## Building
@@ -19,6 +19,12 @@ Ninja from the repository root to produce the kernel image:
 
 ```bash
 ninja
+```
+
+To build with the LLVM toolchain:
+
+```bash
+CC=clang LD=ld.lld ninja
 ```
 
 To clean generated artifacts:
