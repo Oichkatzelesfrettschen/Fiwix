@@ -96,5 +96,5 @@ Credits
 -------
 Fiwix was created by [Jordi Sanfeliu](https://www.fibranet.cat).  
 You can contact me at [jordi@fibranet.cat](mailto:jordi@fibranet.cat).
-See also the CREDITS file.
+See also the [CREDITS.md](CREDITS.md) file.
 
