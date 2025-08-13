@@ -13,3 +13,4 @@ bochs.log
 qemu.log
 
 run-qemu.log
+.ninja_log

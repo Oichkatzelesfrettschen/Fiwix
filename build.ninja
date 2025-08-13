@@ -1,0 +1,21 @@
+# build.ninja - Ninja wrapper for the Fiwix kernel build
+# This file replaces the old build.sh script and drives the existing
+# Makefile using Ninja's parallel execution facilities.
+
+# Determine the number of processors at build time for optimal parallelism.
+nprocs = $$(nproc)
+
+rule make
+  command = make -j$nprocs $args
+  description = make $args
+
+# Default kernel image
+build fiwix: make
+  args = all
+
+# Common auxiliary targets
+build clean: make
+  args = clean
+
+# Set the default target so running plain `ninja` builds the kernel.
+default fiwix
